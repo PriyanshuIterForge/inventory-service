@@ -40,5 +40,13 @@ pipeline {
             steps {
                 bat 'docker run -d -p 8082:8082 --name inventory-service %DEV_ECR%:latest'            }
         }
+
+        stage('Deploy Container') {
+            steps {
+                bat 'docker stop inventory-service || exit 0'
+                bat 'docker rm inventory-service || exit 0'
+                bat 'docker run -d -p 8082:8082 --name inventory-service %DEV_ECR%:latest'
+            }
+        }
     }
 }
