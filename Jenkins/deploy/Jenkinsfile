@@ -1,13 +1,44 @@
+//pipeline {
+//    agent any
+//
+//    stages {
+//
+//        stage('Deploy Container') {
+//            steps {
+//                bat 'docker stop inventory-service || exit 0'
+//                bat 'docker rm inventory-service || exit 0'
+//                bat 'docker run -d -p 8080:8080 --name inventory-service inventory-service'
+//            }
+//        }
+//    }
+//}
+
+
 pipeline {
     agent any
 
+    environment {
+        DEV_ECR = '654654263647.dkr.ecr.ap-south-1.amazonaws.com/inventory-service-dev'
+    }
+
     stages {
 
-        stage('Deploy Container') {
+        stage('Pull Image') {
+            steps {
+                bat 'docker pull %DEV_ECR%:latest'
+            }
+        }
+
+        stage('Stop Old Container') {
             steps {
                 bat 'docker stop inventory-service || exit 0'
                 bat 'docker rm inventory-service || exit 0'
-                bat 'docker run -d -p 8080:8080 --name inventory-service inventory-service'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                bat 'docker run -d -p 8082:8080 --name inventory-service %DEV_ECR%:latest'
             }
         }
     }
