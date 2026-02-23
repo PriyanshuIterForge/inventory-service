@@ -49,19 +49,19 @@ pipeline {
 
         stage('Login to ECR') {
             steps {
-                bat 'aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %DEV_ECR%'
+                bat 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 654654263647.dkr.ecr.ap-south-1.amazonaws.com'
             }
         }
 
         stage('Tag Image') {
             steps {
-                bat 'docker tag order-service-dev %DEV_ECR%:latest'
+                bat 'docker tag order-service 654654263647.dkr.ecr.ap-south-1.amazonaws.com/order-service-dev:latest'
             }
         }
 
-        stage('Push to Dev ECR') {
+        stage('Push Image') {
             steps {
-                bat 'docker push %DEV_ECR%:latest'
+                bat 'docker push 654654263647.dkr.ecr.ap-south-1.amazonaws.com/order-service-dev:latest'
             }
         }
     }
