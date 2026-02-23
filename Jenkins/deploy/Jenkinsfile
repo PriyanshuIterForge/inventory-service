@@ -38,8 +38,7 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                bat 'docker run -d -p 8082:8080 --name inventory-service %DEV_ECR%:latest'
-            }
+                bat 'docker run -d -p 8082:8082 --name inventory-service %DEV_ECR%:latest'            }
         }
     }
 }
